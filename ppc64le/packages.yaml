@@ -1,0 +1,6 @@
+packages:
+  mpich:
+    buildable: false
+    externals:
+    - spec: mpich@3.3.2~hydra device=ch3
+      prefix: /usr/local/mpich

@@ -1,0 +1,29 @@
+compilers:
+- compiler:
+    spec: clang@13.0.0
+    paths:
+      cc: /spack-sw/view/bin/clang
+      cxx: /spack-sw/view/bin/clang++
+      f77: /spack-sw/view/bin/flang 
+      fc: /spack-sw/view/bin/flang
+    flags: {}
+    operating_system: ubuntu20.04
+    target: ppc64le
+    modules: []
+    environment:
+      set:
+        F18_FC: /usr/bin/gfortran
+    extra_rpaths: []
+- compiler:
+    spec: gcc@9.3.0
+    paths:
+      cc: /usr/bin/gcc
+      cxx: /usr/bin/g++
+      f77: /usr/bin/gfortran
+      fc: /usr/bin/gfortran
+    flags: {}
+    operating_system: ubuntu20.04
+    target: ppc64le
+    modules: []
+    environment: {}
+    extra_rpaths: []
