@@ -2,10 +2,10 @@ compilers:
 - compiler:
     spec: clang@13.0.0
     paths:
-      cc: /spack-sw/view/bin/clang
-      cxx: /spack-sw/view/bin/clang++
-      f77: /spack-sw/view/bin/flang 
-      fc: /spack-sw/view/bin/flang
+      cc: /spack-llvm/view/bin/clang
+      cxx: /spack-llvm/view/bin/clang++
+      f77: /spack-llvm/view/bin/flang 
+      fc: /spack-llvm/view/bin/flang
     flags: {}
     operating_system: ubuntu20.04
     target: ppc64le
