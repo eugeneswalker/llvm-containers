@@ -12,6 +12,8 @@ RUN apt update -y \
 COPY spack.yaml spack.lock /
 COPY e4s.pub /
 
+COPY f18_assemble.patch / 
+
 RUN git clone https://github.com/spack/spack /opt/spack \
  && (cd /opt/spack && git checkout ${SPACK_REF} && rm -rf .git) \
  && . /opt/spack/share/spack/setup-env.sh \
@@ -53,7 +55,8 @@ RUN git clone https://github.com/spack/spack /opt/spack \
  && (cd /opt/spack && rm -rf .git) \
  && echo . /opt/spack/share/spack/setup-env.sh >> /etc/bash.bashrc
 
-COPY /compilers.yaml /packages.yaml /opt/spack/etc/spack/
-COPY /compilers.yaml /packages.yaml /root/.spack/linux/
+COPY /compilers.yaml /packages.yaml /etc/spack/
+COPY /compilers.yaml /root/.spack/linux/
+COPY /packages.yaml /root/.spack/linux/
 
 WORKDIR /
