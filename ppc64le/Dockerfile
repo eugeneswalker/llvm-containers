@@ -9,8 +9,7 @@ RUN apt update -y \
  && apt autoremove -y \
  && apt clean
 
-COPY spack.yaml spack.lock /
-COPY e4s.pub /
+COPY spack.yaml spack.lock f18_assemble.patch e4s.pub /
 
 RUN git clone https://github.com/spack/spack /opt/spack \
  && (cd /opt/spack && git checkout ${SPACK_REF} && rm -rf .git) \

@@ -1,0 +1,75 @@
+diff --git a/flang/tools/f18/f18.cpp b/flang/tools/f18/f18.cpp
+index 54a905133db..a137d3fcefd 100644
+--- a/flang/tools/f18/f18.cpp
++++ b/flang/tools/f18/f18.cpp
+@@ -109,6 +109,8 @@ struct DriverOptions {
+   bool getDefinition{false};
+   GetDefinitionArgs getDefinitionArgs{0, 0, 0};
+   bool getSymbolsSources{false};
++  bool dashc{true};
++  bool assemble{true};
+ };
+ 
+ void Exec(std::vector<llvm::StringRef> &argv, bool verbose = false) {
+@@ -135,10 +137,15 @@ void RunOtherCompiler(DriverOptions &driver, char *source, char *relo) {
+   for (size_t j{0}; j < driver.F18_FCArgs.size(); ++j) {
+     argv.push_back(driver.F18_FCArgs[j]);
+   }
+-  char dashC[3] = "-c", dashO[3] = "-o";
+-  argv.push_back(dashC);
++  char dashC[3] = "-c", dashO[3] = "-o", dashS[3] = "-S";
++  if (driver.dashc) {
++    argv.push_back(dashC);
++  }
+   argv.push_back(dashO);
+   argv.push_back(relo);
++  if (!driver.assemble) {
++    argv.push_back(dashS);
++  }
+   argv.push_back(source);
+   Exec(argv, driver.verbose);
+ }
+@@ -157,7 +164,11 @@ std::string RelocatableName(const DriverOptions &driver, std::string path) {
+   if (dot != std::string::npos) {
+     relo = base.substr(0, dot);
+   }
+-  relo += ".o";
++  if (driver.assemble) {
++    relo += ".o";
++  } else {
++    relo += ".s";
++  }
+   return relo;
+ }
+ 
+@@ -617,7 +628,8 @@ int main(int argc, char *const argv[]) {
+           << "\n"
+           << "Defaults:\n"
+           << "  When invoked with input files, and no options to tell\n"
+-          << "  it otherwise, f18 will unparse its input and pass that on to an\n"
++          << "  it otherwise, f18 will unparse its input and pass that on to "
++             "an\n"
+           << "  external compiler to continue the compilation.\n"
+           << "  The external compiler is specified by the F18_FC environment\n"
+           << "  variable. The default is 'gfortran'.\n"
+@@ -655,13 +667,18 @@ int main(int argc, char *const argv[]) {
+           << "  -fdebug-no-semantics  disable semantic checks\n"
+           << "  -fget-definition\n"
+           << "  -fget-symbols-sources\n"
+-          << "  -v -c -o -I -D -U    have their usual meanings\n"
++          << "  -v -c -o -I -D -U -S   have their usual meanings\n"
+           << "  -help                print this again\n"
+-          << "Unrecognised options are passed through to the external compiler\n"
++          << "Unrecognised options are passed through to the external "
++             "compiler\n"
+           << "set by F18_FC (see defaults).\n";
+       return exitStatus;
+     } else if (arg == "-V" || arg == "--version") {
+       return printVersion();
++    } else if (arg == "-S") {
++      driver.dashc = false;
++      driver.assemble = false;
++      driver.compileOnly = true;
+     } else {
+       driver.F18_FCArgs.push_back(arg);
+       if (arg == "-v") {
