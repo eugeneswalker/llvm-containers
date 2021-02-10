@@ -96,8 +96,12 @@ spack:
       version:
       - 1.7.3
     python:
-      version:
-      - 3.8
+      buildable: false
+      externals:
+      - spec: python@2.7.18+bz2+ctypes+dbm~lzma+nis+pyexpat+readline+sqlite3+ssl~tix~tkinter+uuid+zlib
+        prefix: /
+      - spec: python@3.8.5+bz2+ctypes+dbm+lzma+nis+pyexpat+readline+sqlite3+ssl~tix~tkinter+uuid+zlib
+        prefix: /
     readline:
       version:
       - 8

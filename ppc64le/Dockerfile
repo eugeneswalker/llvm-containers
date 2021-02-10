@@ -9,7 +9,7 @@ RUN apt update -y \
  && apt autoremove -y \
  && apt clean
 
-COPY spack.yaml spack.lock f18_assemble.patch e4s.pub /
+COPY spack.yaml spack.lock f18_assemble_new.patch e4s.pub /
 
 RUN git clone https://github.com/spack/spack /opt/spack \
  && (cd /opt/spack && git checkout ${SPACK_REF} && rm -rf .git) \
@@ -52,7 +52,6 @@ RUN git clone https://github.com/spack/spack /opt/spack \
  && (cd /opt/spack && rm -rf .git) \
  && echo . /opt/spack/share/spack/setup-env.sh >> /etc/bash.bashrc
 
-COPY /compilers.yaml /packages.yaml /etc/spack/
 COPY /compilers.yaml /root/.spack/linux/
 COPY /packages.yaml /root/.spack/
 

@@ -52,7 +52,6 @@ RUN git clone https://github.com/spack/spack /opt/spack \
  && (cd /opt/spack && rm -rf .git) \
  && echo . /opt/spack/share/spack/setup-env.sh >> /etc/bash.bashrc
 
-COPY /compilers.yaml /packages.yaml /etc/spack/
 COPY /compilers.yaml /root/.spack/linux/
 COPY /packages.yaml /root/.spack/
 
