@@ -1,5 +1,5 @@
 diff --git a/flang/tools/f18/f18.cpp b/flang/tools/f18/f18.cpp
-index 4546353fe010..a5b22b9eb484 100644
+index 4546353fe010..076471f843ca 100644
 --- a/flang/tools/f18/f18.cpp
 +++ b/flang/tools/f18/f18.cpp
 @@ -109,6 +109,8 @@ struct DriverOptions {
@@ -42,7 +42,7 @@ index 4546353fe010..a5b22b9eb484 100644
    return relo;
  }
  
-@@ -393,6 +404,21 @@ int printVersion() {
+@@ -393,6 +404,11 @@ int printVersion() {
    return exitStatus;
  }
  
@@ -51,20 +51,10 @@ index 4546353fe010..a5b22b9eb484 100644
 +  return exitStatus;
 +}
 +
-+int printSearchDirs( DriverOptions &driver ){
-+  std::vector<llvm::StringRef> argv;
-+  for (size_t j{0}; j < driver.F18_FCArgs.size(); ++j) {
-+    argv.push_back(driver.F18_FCArgs[j]);
-+  }
-+  argv.push_back( "-print-search-dirs" );
-+  Exec(argv, driver.verbose);
-+  return 0;
-+}
-+
  int main(int argc, char *const argv[]) {
  
    atexit(CleanUpAtExit);
-@@ -661,7 +687,7 @@ int main(int argc, char *const argv[]) {
+@@ -661,7 +677,7 @@ int main(int argc, char *const argv[]) {
            << "  -fdebug-no-semantics  disable semantic checks\n"
            << "  -fget-definition\n"
            << "  -fget-symbols-sources\n"
@@ -73,7 +63,7 @@ index 4546353fe010..a5b22b9eb484 100644
            << "  -help                print this again\n"
            << "Unrecognised options are passed through to the external "
               "compiler\n"
-@@ -669,8 +695,16 @@ int main(int argc, char *const argv[]) {
+@@ -669,6 +685,12 @@ int main(int argc, char *const argv[]) {
        return exitStatus;
      } else if (arg == "-V" || arg == "--version") {
        return printVersion();
@@ -85,8 +75,4 @@ index 4546353fe010..a5b22b9eb484 100644
 +      driver.compileOnly = true;
      } else if (arg == "-fdebug-stack-trace") {
        llvm::sys::PrintStackTraceOnErrorSignal(llvm::StringRef{}, true);
-+    } else if ( arg == "-print-search-dirs" ) {
-+      return printSearchDirs( driver );
      } else {
-       driver.F18_FCArgs.push_back(arg);
-       if (arg == "-v") {
