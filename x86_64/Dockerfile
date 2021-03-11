@@ -1,4 +1,4 @@
-FROM gcr.io/ecp-e4s/ubuntu20.04-runner-x86_64:2021-01-01
+FROM gcr.io/ecp-e4s/ubuntu20.04-runner-x86_64:2021-03-10
 
 ARG SPACK_REF=develop
 ARG LLVM_REF=main
@@ -42,7 +42,8 @@ RUN . /env.sh \
  && find . -maxdepth 1 -name "*.f18.mod" -exec cp {} /usr/local/mpich/include/. \; \
  && rm -rf /mpich
 
-RUN sed -i 's/wl=""/wl="-Wl,"/' /usr/local/mpich/bin/mpif90
+RUN sed -i 's/wl=""/wl="-Wl,"/' /usr/local/mpich/bin/mpif90 \
+ && sed -i 's/wl=""/wl="-Wl,"/' /usr/local/mpich/bin/mpif77
 
 RUN . ./env.sh \
  && echo export LD_LIBRARY_PATH=/usr/local/mpich/lib:${LD_LIBRARY_PATH} >> /etc/bash.bashrc \
